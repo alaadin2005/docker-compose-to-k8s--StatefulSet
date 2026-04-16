@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vprofile-app
+  namespace: vprofile
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: vprofile-app
+  template:
+    metadata:
+      labels:
+        app: vprofile-app
+    spec:
+      containers:
+      - name: vprofile-app
+        image: vprocontainers/vprofileapp
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 20
+          periodSeconds: 10
+        volumeMounts:
+        - mountPath: /usr/local/tomcat/webapps
+          name: tomcat-storage
+      volumes:
+      - name: tomcat-storage
+        persistentVolumeClaim:
+          claimName: tomcat-pvc

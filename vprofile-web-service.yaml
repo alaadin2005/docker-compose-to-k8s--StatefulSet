@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vprofile-web
+  namespace: vprofile
+spec:
+  type: LoadBalancer
+  selector:
+    app: vprofile-web
+  ports:
+  - port: 80
+    targetPort: 80
