@@ -26,9 +26,13 @@ spec:
               name: vprofile-secret
               key: MYSQL_ROOT_PASSWORD
         volumeMounts:
-        - mountPath: /var/lib/mysql
-          name: mysql-storage
-      volumes:
-      - name: mysql-storage
-        persistentVolumeClaim:
-          claimName: mysql-pvc
+        - name: mysql-data
+          mountPath: /var/lib/mysql
+  volumeClaimTemplates:
+    - metadata:
+        name: mysql-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 5Gi
